@@ -1,9 +1,28 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <time.h>		
+		
 
-void find_hor_lines(int **image, int x, int y){
+class analyzer{
+private:
+	int x,y;
+	int **image;
+public:
+	analyzer(int x1,int y1, int** mat){
+		x=x1;
+		y=y1;
+		image = (int**)malloc(x*sizeof(int*));
+					for(int i=0;i<x;i++){
+						image[i]=(int*)malloc(y*sizeof(int));				
+					}
+		for(int i=0; i<x;i++)
+			for(int j=0;j<y;j++)
+				image[i][j]=mat[i][j];
+
+
+	}
+
+void find_hor_lines(){
 	int i,j,num,len;
 	int on_line;
 	num=0;
@@ -43,7 +62,7 @@ void find_hor_lines(int **image, int x, int y){
 
 }
 
-void find_vert_lines(int **image, int x, int y){
+void find_vert_lines(){
 	int i,j,num,len;
 	int on_line;
 	num=0;
@@ -83,21 +102,7 @@ void find_vert_lines(int **image, int x, int y){
 
 
 
-int num_check(char a){
-	if(a=='1'||a=='0')
-		return 1;
-	return 0;
-}
-
-void erraze_image(int **image, int x, int y){
-	int i,j;
-	for(i=0;i<x;i++)
-		for(j=0;j<y;j++)
-			image[i][j]=0;
-
-}
-
-void draw_image_screen(int **image, int x, int y){
+void draw_image_screen(){
 	int i,j;
 	for(i=0;i<x;i++){
 		for(j=0;j<y;j++)
@@ -106,8 +111,21 @@ void draw_image_screen(int **image, int x, int y){
 	}
 
 }
+};
 
+void erraze_image(int ** image, int x,int y){
+	int i,j;
+	for(i=0;i<x;i++)
+		for(j=0;j<y;j++)
+			image[i][j]=0;
 
+}
+
+int num_check(char a){
+	if(a=='1'||a=='0')
+		return 1;
+	return 0;
+}
 int main(int argc, char *argv[]){
 	int j,i,ii=0;
 	int ** image;
@@ -185,9 +203,10 @@ int main(int argc, char *argv[]){
 				}
 
 			}
-			find_hor_lines(image, row, col);
-			find_vert_lines(image, row, col);
-			erraze_image(image,row,col);
+			analyzer *an=new analyzer(row,col,image);
+			an->find_hor_lines();
+			an->find_vert_lines();
+			
 	
 
 	return 0;
